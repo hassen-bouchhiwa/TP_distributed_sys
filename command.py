@@ -3,6 +3,7 @@ import sys
 import json
 import random
 import sys
+from query import query
 
 ips = {
         '192.168.122.1' : 'A',
@@ -13,41 +14,8 @@ ips = {
         '192.168.122.55': 'F',
 }
 
-class query:
-
-        def __init__(self, dest_ip,host,f_ip,l_ip,ttl,file):
-            self.id= random.randint(10000, 99999)
-            self.dest_ip = dest_ip
-            self.host = host
-            self.f_ip = f_ip
-            self.l_ip = l_ip
-            self.ttl  = ttl
-            self.file = file
-        def toString(self):
-            stre = json.dumps(self.__dict__)
-            return stre
-        def send(self):
-            q = self.toString()
-            try:
-                 sock = socket.socket()
-            except socket.error as err:
-                 print('Socket error because of %s' %(err))
-            try:
-                print(self.dest_ip)
-                sock.connect((self.dest_ip, 1500))
-                sock.send(q.encode())
-                print('The query ',self.id,' was sent to host ',self.host)
-            except socket.gaierror:
-                print('There an error resolving the host')
-                sys.exit()
-            sock.close()
-        def changeID(self,idd):
-            self.id = idd
-
-roger = query('192.168.122.1','B','192.168.122.33','192.168.122.33',3,sys.argv[1])
-roger.send()
-
-
+command = query('192.168.122.1','B','192.168.122.33','192.168.122.33',3,sys.argv[1])
+command.send()
 
 
 IP = socket.gethostbyname(socket.gethostname())
